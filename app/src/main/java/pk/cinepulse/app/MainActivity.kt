@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.matchParentSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -168,7 +167,7 @@ fun HomeScreen(onOpen: (Film) -> Unit, onPlay: (Film) -> Unit) {
             }
             item {
                 LazyRow(contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)) {
-                    items(hits) { f -> PosterCard(f) { detail = f } }
+                    items(hits) { f -> PosterCard(f, onOpen) }
                 }
             }
             listOf("Comedy", "Drama", "Thriller", "Action", "Horror").forEach { g ->
@@ -181,7 +180,7 @@ fun HomeScreen(onOpen: (Film) -> Unit, onPlay: (Film) -> Unit) {
                     }
                     item {
                         LazyRow(contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)) {
-                            items(row) { f -> PosterCard(f) { detail = f } }
+                            items(row) { f -> PosterCard(f, onOpen) }
                         }
                     }
                 }
