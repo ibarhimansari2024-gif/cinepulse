@@ -58,25 +58,74 @@ import coil.compose.AsyncImage
 
 data class Film(
     val id: String, val title: String, val year: Int, val genre: String,
-    val mins: Int, val desc: String, val hue: Float, val url: String
+    val mins: Int, val desc: String, val hue: Float, val url: String,
+    val sec: String = "Hollywood"
 )
 
 val FILMS = listOf(
     Film("his_girl_friday", "His Girl Friday", 1940, "Comedy", 92,
         "A newspaper editor uses every trick he knows to keep his ace-reporter ex-wife from remarrying — and from walking into a hanging story.", 200f,
-        "https://archive.org/download/his_girl_friday/his_girl_friday.mp4"),
+        "https://archive.org/download/his_girl_friday/his_girl_friday.mp4", "Hollywood"),
     Film("meet_john_doe", "Meet John Doe", 1941, "Drama", 122,
         "A reporter invents a \"John Doe\" to save her job — and accidentally ignites a nationwide movement she can no longer control.", 45f,
-        "https://archive.org/download/meet_john_doe/meet_john_doe.mp4"),
+        "https://archive.org/download/meet_john_doe/meet_john_doe.mp4", "Hollywood"),
     Film("TheGeneral", "The General", 1926, "Action", 79,
         "A railroad engineer single-handedly chases his stolen locomotive — and his heart — straight through enemy lines.", 30f,
-        "https://archive.org/download/TheGeneral/The_General_512kb.mp4"),
+        "https://archive.org/download/TheGeneral/The_General_512kb.mp4", "Hollywood"),
     Film("TheLittleShopOfHorrors", "The Little Shop of Horrors", 1960, "Horror", 72,
         "A flower-shop clerk breeds a strange plant in one night — and it develops a very unusual appetite.", 120f,
-        "https://archive.org/download/TheLittleShopOfHorrors/The%20Little%20Shop%20of%20Horrors.mp4"),
+        "https://archive.org/download/TheLittleShopOfHorrors/The%20Little%20Shop%20of%20Horrors.mp4", "Hollywood"),
     Film("Suddenly_1954", "Suddenly", 1954, "Thriller", 75,
         "Assassins seize an ordinary family home in a small town — because the President's train makes an unscheduled stop there today.", 350f,
-        "https://archive.org/download/Suddenly_1954/Suddenly_1954_512kb.mp4")
+        "https://archive.org/download/Suddenly_1954/Suddenly_1954_512kb.mp4", "Hollywood"),
+    Film("A.Shriek.in.the.Night", "A Shriek in the Night", 1933, "Mystery", 77,
+        "A reporter and a police rival race a strangled-lady killer through a Manhattan apartment house.", 260f,
+        "https://archive.org/download/A.Shriek.in.the.Night/A_Shriek_in_the_Night.mp4", "Hollywood"),
+    Film("TheAmazingMr.X1948Avi", "The Amazing Mr. X", 1948, "Thriller", 79,
+        "A charming spiritualist works a grieving widow — until a voice from the shore starts working him.", 285f,
+        "https://archive.org/download/TheAmazingMr.X1948Avi/The_Amazing_Mr_X.mp4", "Hollywood"),
+    Film("Boss.of.Big.Town", "The Boss of Big Town", 1942, "Crime", 67,
+        "A market owner stands up to the syndicate shaking down every stall in the city.", 15f,
+        "https://archive.org/download/Boss.of.Big.Town/Boss.of.Big.Town.mp4", "Hollywood"),
+    Film("woody_woodpecker_pantry_panic", "Woody Woodpecker: Pantry Panic", 1941, "Cartoon", 7,
+        "A winter cold snap leaves a very hungry Woody defending every last kernel of his corn stash.", 95f,
+        "https://archive.org/download/woody_woodpecker_pantry_panic/woody_woodpecker_pantry_panic_512kb.mp4", "Cartoons"),
+    Film("Betty_Boop_Poor_Cinderella_1934", "Betty Boop: Poor Cinderella", 1934, "Cartoon", 10,
+        "Fleischer's first color film: a scrub-girl, a fairy godmother, and one glass slipper.", 320f,
+        "https://archive.org/download/Betty_Boop_Poor_Cinderella_1934/Betty_Boop_Poor_Cinderella_1934_512kb.mp4", "Cartoons"),
+    Film("bb_rise_to_fame", "Betty Boop's Rise to Fame", 1934, "Cartoon", 9,
+        "Max Fleischer draws Betty live — three of her classic turns in a single reel.", 340f,
+        "https://archive.org/download/bb_rise_to_fame/bb_rise_to_fame_512kb.mp4", "Cartoons"),
+    Film("little_audry_goofy_goofy_gander", "Little Audrey: Goofy Goofy Gander", 1950, "Cartoon", 7,
+        "Audrey ducks into Mother Goose land and can't stop rewriting the rhymes.", 205f,
+        "https://archive.org/download/little_audry_goofy_goofy_gander/little_audry_goofy_goofy_gander_512kb.mp4", "Cartoons"),
+    Film("failedsamurai1917krazytoonsprint", "Namakura Gatana", 1917, "Anime", 4,
+        "The oldest surviving Japanese animation: a fool buys a dull sword and learns its point the hard way.", 50f,
+        "https://archive.org/download/failedsamurai1917krazytoonsprint/failedsamurai1917krazytoonsprint.mp4", "Anime"),
+    Film("paramountnorakuroshorts1933-1", "Norakuro", 1933, "Anime", 10,
+        "Early Japanese cartoon: a scruffy black-dog recruit stumbles through army life.", 215f,
+        "https://archive.org/download/paramountnorakuroshorts1933-1/paramountnorakuroshorts1933-1.mp4", "Anime"),
+    Film("anonymoose-benkei-tai-ushiwaka-v-2-dvd-10bit-a-28905-ae", "Benkei tai Ushiwaka", 1939, "Anime", 15,
+        "The legendary duel on Gojo Bridge, told in pre-war Japanese animation.", 240f,
+        "https://archive.org/download/anonymoose-benkei-tai-ushiwaka-v-2-dvd-10bit-a-28905-ae/%5BAnonymoose%5D%20Benkei%20tai%20Ushiwaka%20v2%20%28DVD%2C%2010bit%29%20%5BA28905AE%5D.mp4", "Anime"),
+    Film("pyaasa-1957-guru-dutt-classic-hindi-film", "Pyaasa", 1957, "Drama", 136,
+        "A poet starves for recognition in a city that only buys him once he's presumed dead.", 35f,
+        "https://archive.org/download/pyaasa-1957-guru-dutt-classic-hindi-film/VTS_01_1.mp4", "Hindi"),
+    Film("mother-india1957-mehboob-khan-classic-hindi-film-nargis-dutt", "Mother India", 1957, "Drama", 172,
+        "A village mother's fight to feed her sons and keep her honor becomes the nation's own epic.", 25f,
+        "https://archive.org/download/mother-india1957-mehboob-khan-classic-hindi-film-nargis-dutt/VTS_02_1.mp4", "Hindi"),
+    Film("kaagaz-ke-phool-1959-classic-hindi-film-guru-dutt-waheeda-rehman-geeta-dutt-moserbaer-dvd", "Kaagaz Ke Phool", 1959, "Drama", 148,
+        "A famous director discovers a girl in a studio doorway — and directs her into stardom and himself into silence.", 48f,
+        "https://archive.org/download/kaagaz-ke-phool-1959-classic-hindi-film-guru-dutt-waheeda-rehman-geeta-dutt-moserbaer-dvd/VTS_03_1.mp4", "Hindi"),
+    Film("shree-420-1955-classic-hindi-movie-raj-kapoor-nargis", "Shree 420", 1955, "Drama", 167,
+        "A country boy comes to Bombay with honest hands — the city teaches him every trick except how to stop loving.", 300f,
+        "https://archive.org/download/shree-420-1955-classic-hindi-movie-raj-kapoor-nargis/VTS_02_1.mp4", "Hindi"),
+    Film("awara-1951-raj-kapoor-nargis-prithviraj-kapoor-classic-hindi-movie", "Awara", 1951, "Drama", 168,
+        "A judge's son raised by the streets stands accused before the very father who abandoned him.", 330f,
+        "https://archive.org/download/awara-1951-raj-kapoor-nargis-prithviraj-kapoor-classic-hindi-movie/VTS_04_1.mp4", "Hindi"),
+    Film("madhumati-1958-bimal-roy-classic-hindi-film", "Madhumati", 1958, "Drama", 158,
+        "A hill station, a reincarnated love, and a haunted haveli that remembers everything.", 275f,
+        "https://archive.org/download/madhumati-1958-bimal-roy-classic-hindi-film/VTS_02_1.mp4", "Hindi")
 )
 
 fun thumb(id: String) = "https://archive.org/services/img/$id"
@@ -119,9 +168,11 @@ fun CinePulseApp() {
 @Composable
 fun HomeScreen(onOpen: (Film) -> Unit, onPlay: (Film) -> Unit) {
     var query by remember { mutableStateOf("") }
+    var sec by remember { mutableStateOf("All") }
     val q = query.trim()
-    val hits = if (q.isEmpty()) FILMS else FILMS.filter {
-        it.title.contains(q, true) || it.genre.contains(q, true)
+    val hits = FILMS.filter {
+        (sec == "All" || it.sec == sec) &&
+            (q.isEmpty() || it.title.contains(q, true) || it.genre.contains(q, true))
     }
     LazyColumn(Modifier.fillMaxSize()) {
         item {
@@ -151,6 +202,25 @@ fun HomeScreen(onOpen: (Film) -> Unit, onPlay: (Film) -> Unit) {
                 modifier = Modifier.fillMaxWidth().padding(16.dp, 8.dp)
             )
         }
+        item {
+            LazyRow(contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)) {
+                items(listOf("All", "Hollywood", "Cartoons", "Anime", "Hindi")) { s ->
+                    val on = s == sec
+                    Text(
+                        s, fontSize = 13.sp, fontWeight = FontWeight.Bold,
+                        color = if (on) Color(0xFF04211B) else Color(0xFF9AA3AE),
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .background(
+                                if (on) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                                RoundedCornerShape(20.dp)
+                            )
+                            .clickable { sec = s }
+                            .padding(14.dp, 8.dp)
+                    )
+                }
+            }
+        }
         if (hits.isEmpty()) {
             item {
                 Column(Modifier.padding(16.dp, 40.dp)) {
@@ -161,7 +231,7 @@ fun HomeScreen(onOpen: (Film) -> Unit, onPlay: (Film) -> Unit) {
         } else {
             item { HeroCard(hits.first(), onPlay = onPlay, onOpen = onOpen) }
             item {
-                Text("  CLASSICS CINEMA", fontSize = 12.sp, fontWeight = FontWeight.Bold,
+                Text("  NOW SHOWING", fontSize = 12.sp, fontWeight = FontWeight.Bold,
                     color = Color(0xFF8B94A0), letterSpacing = 2.sp,
                     modifier = Modifier.padding(0.dp, 10.dp))
             }
