@@ -56,10 +56,12 @@ import coil.compose.AsyncImage
 
 /* ---------------- Catalog: public-domain classics, streamable full films ---------------- */
 
+data class Ep(val n: Int, val t: String, val url: String, val mins: Int = 0)
+
 data class Film(
     val id: String, val title: String, val year: Int, val genre: String,
     val mins: Int, val desc: String, val hue: Float, val url: String,
-    val sec: String = "Hollywood"
+    val sec: String = "Hollywood", val eps: List<Ep> = emptyList()
 )
 
 val FILMS = listOf(
@@ -125,7 +127,40 @@ val FILMS = listOf(
         "https://archive.org/download/awara-1951-raj-kapoor-nargis-prithviraj-kapoor-classic-hindi-movie/VTS_04_1.mp4", "Hindi"),
     Film("madhumati-1958-bimal-roy-classic-hindi-film", "Madhumati", 1958, "Drama", 158,
         "A hill station, a reincarnated love, and a haunted haveli that remembers everything.", 275f,
-        "https://archive.org/download/madhumati-1958-bimal-roy-classic-hindi-film/VTS_02_1.mp4", "Hindi")
+        "https://archive.org/download/madhumati-1958-bimal-roy-classic-hindi-film/VTS_02_1.mp4", "Hindi"),
+    Film("superman_mechanical_monsters", "Superman: The Mechanical Monsters", 1941, "Cartoon", 10,
+        "Fleischer's art-deco Superman battles a fleet of flying robots stealing gold from the sky.", 210f,
+        "https://archive.org/download/superman_the_mechanical_monsters/superman_the_mechanical_monsters_512kb.mp4", "Cartoons"),
+    Film("superman_electric_earthquake", "Superman: Electric Earthquake", 1942, "Cartoon", 9,
+        "A vengeful scientist's electric earthquake machine threatens Manhattan — Superman dives in.", 195f,
+        "https://archive.org/download/superman_electric_earthquake/superman_electric_earthquake_512kb.mp4", "Cartoons"),
+    Film("superman_eleventh_hour", "Superman: Eleventh Hour", 1942, "Cartoon", 9,
+        "Clark and Lois are held captive — every eleventh hour, a mysterious sabotage hits the docks.", 225f,
+        "https://archive.org/download/superman_eleventh_hour/superman_eleventh_hour_512kb.mp4", "Cartoons"),
+    Film("flash-gordon-conquers-1940", "Flash Gordon Conquers the Universe", 1940, "Serial", 20,
+        "The 1940 chapter serial: Flash, Dale and Zarkov defend Earth from Ming's purple-death plagues and rocket armadas.", 205f,
+        "https://archive.org/download/flash_gordon1/flash_gordon_ep01_512kb.mp4", "TV & Serials",
+        listOf(
+            Ep(1, "Chapter 1", "https://archive.org/download/flash_gordon1/flash_gordon_ep01_512kb.mp4", 20),
+            Ep(2, "Chapter 2", "https://archive.org/download/flash_gordon2/chapter2_512kb.mp4", 20),
+            Ep(3, "Chapter 3", "https://archive.org/download/flash_gordon3/chapter3_512kb.mp4", 20),
+            Ep(4, "Chapter 4", "https://archive.org/download/flash_gordon4/flash_gordon_ep04_512kb.mp4", 20),
+            Ep(5, "Chapter 5", "https://archive.org/download/flash_gordon5/chapter5_512kb.mp4", 20))),
+    Film("flash-gordon-1936", "Flash Gordon (1936)", 1936, "Serial", 22,
+        "The original 1936 space serial that started them all — Flash, Dale and Zarkov crash-land on Mongo.", 45f,
+        "https://archive.org/download/flash-gordon-1936_202408/S1Ep1%20-%20The%20Planet%20of%20Peril.mp4", "TV & Serials",
+        listOf(Ep(1, "The Planet of Peril", "https://archive.org/download/flash-gordon-1936_202408/S1Ep1%20-%20The%20Planet%20of%20Peril.mp4", 22))),
+    Film("thebeverlyhillbilliesgettingsettledhq", "The Beverly Hillbillies", 1962, "Sitcom", 26,
+        "The Clampetts strike oil and move to Beverly Hills — the classic 1960s sitcom, these episodes are in the public domain.", 70f,
+        "https://archive.org/download/thebeverlyhillbilliesgettingsettledhq/The%20Beverly%20Hillbillies%20-%20Getting%20Settled%20HQ.mp4", "TV & Serials",
+        listOf(
+            Ep(1, "Getting Settled", "https://archive.org/download/thebeverlyhillbilliesgettingsettledhq/The%20Beverly%20Hillbillies%20-%20Getting%20Settled%20HQ.mp4", 26),
+            Ep(2, "Meanwhile, Back at the Cabin", "https://archive.org/download/thebeverlyhillbilliesmeanwhilebackatthecabinhq/The%20Beverly%20Hillbillies%20-%20Meanwhile%2C%20Back%20at%20the%20Cabin%20HQ.mp4", 26),
+            Ep(3, "Granny's Garden", "https://archive.org/download/The_Beverly_Hillbillies/GRANNYS_GARDEN.mp4", 26))),
+    Film("TheLucyShow5x0191266LucyAndGeorgeBurns", "The Lucy Show", 1966, "Sitcom", 26,
+        "Lucille Ball's classic sitcom — a public-domain episode starring Lucy and George Burns.", 160f,
+        "https://archive.org/download/TheLucyShow5x0191266LucyAndGeorgeBurns/TheLucyShow_5x01_9-12-66_LucyandGeorgeBurns.mp4", "TV & Serials",
+        listOf(Ep(1, "Lucy and George Burns", "https://archive.org/download/TheLucyShow5x0191266LucyAndGeorgeBurns/TheLucyShow_5x01_9-12-66_LucyandGeorgeBurns.mp4", 26)))
 )
 
 fun thumb(id: String) = "https://archive.org/services/img/$id"
@@ -146,6 +181,7 @@ class MainActivity : ComponentActivity() {
 fun CinePulseApp() {
     var detail by remember { mutableStateOf<Film?>(null) }
     var playing by remember { mutableStateOf<Film?>(null) }
+    var playUrl by remember { mutableStateOf<String?>(null) }
     MaterialTheme(
         colorScheme = darkColorScheme(
             primary = Color(0xFF19C6A6), background = Color(0xFF0B0D10),
@@ -154,9 +190,10 @@ fun CinePulseApp() {
     ) {
         Surface(Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             when {
-                playing != null -> PlayerScreen(playing!!, onClose = { playing = null })
+                playing != null -> PlayerScreen(playing!!, playUrl, onClose = { playing = null })
                 detail != null -> DetailScreen(detail!!, onBack = { detail = null },
-                    onPlay = { playing = detail })
+                    onPlay = { playing = detail; playUrl = null },
+                    onPlayEp = { playing = detail; playUrl = it })
                 else -> HomeScreen(onOpen = { detail = it }, onPlay = { playing = it })
             }
         }
@@ -204,7 +241,7 @@ fun HomeScreen(onOpen: (Film) -> Unit, onPlay: (Film) -> Unit) {
         }
         item {
             LazyRow(contentPadding = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp)) {
-                items(listOf("All", "Hollywood", "Cartoons", "Anime", "Hindi")) { s ->
+                items(listOf("All", "Hollywood", "TV & Serials", "Cartoons", "Anime", "Hindi")) { s ->
                     val on = s == sec
                     Text(
                         s, fontSize = 13.sp, fontWeight = FontWeight.Bold,
@@ -324,7 +361,7 @@ fun PosterCard(f: Film, onOpen: (Film) -> Unit) {
 /* ---------------- Detail ---------------- */
 
 @Composable
-fun DetailScreen(f: Film, onBack: () -> Unit, onPlay: () -> Unit) {
+fun DetailScreen(f: Film, onBack: () -> Unit, onPlay: () -> Unit, onPlayEp: (String) -> Unit) {
     BackHandler(onBack = onBack)
     Column(Modifier.fillMaxSize()) {
         Box(Modifier.fillMaxWidth().height(260.dp)) {
@@ -348,6 +385,25 @@ fun DetailScreen(f: Film, onBack: () -> Unit, onPlay: () -> Unit) {
             Spacer(Modifier.height(14.dp))
             Text(f.desc, fontSize = 14.sp, lineHeight = 20.sp, color = Color(0xFFD3D9E0))
             Spacer(Modifier.height(10.dp))
+            if (f.eps.isNotEmpty()) {
+                Text("  EPISODES", fontSize = 12.sp, fontWeight = FontWeight.Bold,
+                    color = Color(0xFF8B94A0), letterSpacing = 2.sp)
+                f.eps.forEach { ep ->
+                    Row(
+                        Modifier.fillMaxWidth().clickable { onPlayEp(ep.url) }.padding(0.dp, 12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("EP ${ep.n}", color = MaterialTheme.colorScheme.primary,
+                            fontSize = 12.sp, fontWeight = FontWeight.Bold, modifier = Modifier.width(44.dp))
+                        Column(Modifier.weight(1f)) {
+                            Text(ep.t, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+                            if (ep.mins > 0) Text("${ep.mins} min", fontSize = 11.sp, color = Color(0xFF8B94A0))
+                        }
+                        Text("▶", color = MaterialTheme.colorScheme.primary)
+                    }
+                }
+                Spacer(Modifier.height(6.dp))
+            }
             Text("Streamed from the Internet Archive's public-domain collection. " +
                     "The film is in the public domain; playback quality depends on the archive copy.",
                 fontSize = 11.sp, color = Color(0xFF6B7480), lineHeight = 15.sp)
@@ -358,11 +414,11 @@ fun DetailScreen(f: Film, onBack: () -> Unit, onPlay: () -> Unit) {
 /* ---------------- Player ---------------- */
 
 @Composable
-fun PlayerScreen(f: Film, onClose: () -> Unit) {
+fun PlayerScreen(f: Film, url: String?, onClose: () -> Unit) {
     val ctx = LocalContext.current
     val player = remember {
         ExoPlayer.Builder(ctx).build().apply {
-            setMediaItem(MediaItem.fromUri(f.url))
+            setMediaItem(MediaItem.fromUri(url ?: f.url))
             prepare()
             playWhenReady = true
         }
